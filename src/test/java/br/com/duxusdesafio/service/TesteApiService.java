@@ -62,6 +62,9 @@ public class TesteApiService {
 
         Time timeRetornado = apiService.timeDaData(data, todosOsTimes);
 
+        System.out.println("esperado" + esperado);
+        System.out.println("Retornado" + timeRetornado.getComposicaoTime());
+
         assertEquals(esperado, timeRetornado);
     }
 
@@ -90,6 +93,9 @@ public class TesteApiService {
     public void testIntegranteMaisUsado(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes, Integrante esperado) {
 
         Integrante integranteRetornado = apiService.integranteMaisUsado(dataInicial, dataFinal, todosOsTimes);
+
+        System.out.println("Esperado: "+esperado);
+        System.out.println("retornado: "+integranteRetornado);
 
         assertEquals(esperado, integranteRetornado);
     }
@@ -126,6 +132,9 @@ public class TesteApiService {
             nomeDosIntegrantesDoTimeMaisComum.sort(Comparator.naturalOrder());
         }
 
+        System.out.println("Esperado" + esperado.toString());
+        System.out.println("Retornado" + nomeDosIntegrantesDoTimeMaisComum.toString());
+
         assertEquals(esperado, nomeDosIntegrantesDoTimeMaisComum);
     }
 
@@ -153,6 +162,9 @@ public class TesteApiService {
 
         String funcaoMaisComum = apiService.funcaoMaisComum(dataInicial, dataFinal, todosOsTimes);
 
+        System.out.println("Esperado " + esperado);
+        System.out.println("Retornado " + funcaoMaisComum);
+
         assertEquals(esperado, funcaoMaisComum);
     }
 
@@ -176,6 +188,10 @@ public class TesteApiService {
     public void testFranquiaMaisFamosa(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes, String esperado) {
 
         String franquiaMaisFamosa = apiService.franquiaMaisFamosa(dataInicial, dataFinal, todosOsTimes);
+
+        System.out.println("Esperado " +esperado);
+        System.out.println("Retornado " +franquiaMaisFamosa);
+
         assertEquals(esperado, franquiaMaisFamosa);
     }
 
