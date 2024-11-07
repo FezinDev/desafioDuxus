@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -87,7 +88,8 @@ public class ApiService {
         Time timeMaisComum = null;
         int maxCount = 0;
 
-        // itera sobre os times para contar as ocorrências de cada um dentro do intervalo
+        // itera sobre os times para contar as ocorrências de cada um dentro do
+        // intervalo
         for (Time time : todosOsTimes) {
             // Verifica se o time está dentro do intervalo de datas
             if (!time.getData().isBefore(dataInicial) && !time.getData().isAfter(dataFinal)) {
@@ -213,16 +215,64 @@ public class ApiService {
      * Vai retornar o nome da Franquia mais comum nos times dentro do período
      */
     public Map<String, Long> contagemPorFranquia(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes) {
-        // TODO Implementar método seguindo as instruções!
-        return null;
+        Map<String, Long> contagem = new HashMap<>();
+
+        // itera todos os times
+        for (Time time : todosOsTimes) {
+            // verifica se o time está dentro do intervalo de datas
+            if (!time.getData().isBefore(dataInicial) && !time.getData().isAfter(dataFinal)) {
+
+                // para garantir que a franquia é contada apenas uma vez por time
+                Map<String, Boolean> franquiasContadasNoTime = new HashMap<>();
+
+                // para cada time, itera os integrantes e verifica se a franquia já foi
+                // registrada
+                for (ComposicaoTime composicao : time.getComposicaoTime()) {
+                    Integrante integrante = composicao.getIntegrante();
+                    String franquia = integrante.getFranquia();
+
+                    // se a franquia ainda não foi contada para este time, adiciona ao map e conta
+                    if (!franquiasContadasNoTime.containsKey(franquia)) {
+                        franquiasContadasNoTime.put(franquia, true);
+                        contagem.put(franquia, contagem.getOrDefault(franquia, 0L) + 1);
+                    }
+                }
+            }
+        }
+
+        return contagem;
     }
 
     /**
      * Vai retornar o número (quantidade) de Funções dentro do período
      */
     public Map<String, Long> contagemPorFuncao(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes) {
-        // TODO Implementar método seguindo as instruções!
-        return null;
+        Map<String, Long> contagem = new HashMap<>();
+
+        // itera todos os times
+        for (Time time : todosOsTimes) {
+            // verifica se o time está dentro do intervalo de datas
+            if (!time.getData().isBefore(dataInicial) && !time.getData().isAfter(dataFinal)) {
+
+                // para garantir que a franquia é contada apenas uma vez por time
+                Map<String, Boolean> funcoesContadasNoTime = new HashMap<>();
+
+                // para cada time, itera os integrantes e verifica se a franquia já foi
+                // registrada
+                for (ComposicaoTime composicao : time.getComposicaoTime()) {
+                    Integrante integrante = composicao.getIntegrante();
+                    String posicao = integrante.getFuncao();
+
+                    // se a franquia ainda não foi contada para este time, adiciona ao map e conta
+                    if (!funcoesContadasNoTime.containsKey(posicao)) {
+                        funcoesContadasNoTime.put(posicao, true);
+                        contagem.put(posicao, contagem.getOrDefault(posicao, 0L) + 1);
+                    }
+                }
+            }
+        }
+
+        return contagem;
     }
 
 }

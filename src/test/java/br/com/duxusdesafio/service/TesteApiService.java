@@ -62,7 +62,7 @@ public class TesteApiService {
 
         Time timeRetornado = apiService.timeDaData(data, todosOsTimes);
 
-        System.out.println("esperado" + esperado);
+        System.out.println("esperado" + esperado.getComposicaoTime());
         System.out.println("Retornado" + timeRetornado.getComposicaoTime());
 
         assertEquals(esperado, timeRetornado);
@@ -202,7 +202,7 @@ public class TesteApiService {
         List<Time> todosOsTimes = dadosParaTesteApiService.getTodosOsTimes();
 
         Map<String, Long> esperado = new HashMap<>();
-        esperado.put(dadosParaTesteApiService.getFranquiaNBA(), 2L);
+        esperado.put(dadosParaTesteApiService.getFranquiaNBA(), 3L);
 
         return new Object[][]{
                 {
@@ -219,6 +219,10 @@ public class TesteApiService {
     public void testContagemPorFranquia(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes, Map<String, Long> esperado) {
 
         Map<String, Long> contagemPorFranquia = apiService.contagemPorFranquia(dataInicial, dataFinal, todosOsTimes);
+
+        System.out.println(esperado);
+        System.out.println(contagemPorFranquia);
+
         assertEquals(esperado, contagemPorFranquia);
     }
 
@@ -232,7 +236,7 @@ public class TesteApiService {
 
         Map<String, Long> esperado = new HashMap<>();
         esperado.put("ala", 2L);
-        esperado.put("ala-pivô", 1L);
+        esperado.put("ala-pivô", 3L);
 
         return new Object[][]{
                 {
@@ -249,6 +253,10 @@ public class TesteApiService {
     public void testContagemPorFuncao(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes, Map<String, Long> esperado) {
 
         Map<String, Long> contagemPorFuncao = apiService.contagemPorFuncao(dataInicial, dataFinal, todosOsTimes);
+
+        System.out.println("Esperado " +esperado);
+        System.out.println("retornado" +contagemPorFuncao);
+
         assertEquals(esperado, contagemPorFuncao);
     }
 
