@@ -3,6 +3,9 @@ package br.com.duxusdesafio.service;
 import br.com.duxusdesafio.model.ComposicaoTime;
 import br.com.duxusdesafio.model.Integrante;
 import br.com.duxusdesafio.model.Time;
+import br.com.duxusdesafio.repositorios.TimeRepositorio;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -20,6 +23,9 @@ import java.util.Map;
  */
 @Service
 public class ApiService {
+
+    @Autowired
+    private TimeRepositorio timeRepositorio;
 
     /**
      * Vai retornar uma lista com os nomes dos integrantes do time daquela data
@@ -273,6 +279,60 @@ public class ApiService {
         }
 
         return contagem;
+    }
+
+    // os métodos a seguir servirão para a API
+
+    public Map<String, Long> contagemPorFranquia(LocalDate dataInicial, LocalDate dataFinal) {
+        // Busca todos os times do banco de dados (sem filtro de data)
+
+        List<Time> todosOsTimes = timeRepositorio.findAll();
+        // Chama o seu método passando a lista de times obtida do banco de dados
+        return contagemPorFranquia(dataInicial, dataFinal, todosOsTimes);
+    }
+
+    public Map<String, Long> contagemPorFuncao(LocalDate dataInicial, LocalDate dataFinal) {
+
+        List<Time> todosOsTimes = timeRepositorio.findAll();
+        // Chama o seu método passando a lista de times obtida do banco de dados
+        return contagemPorFuncao(dataInicial, dataFinal, todosOsTimes);
+    }
+
+    public List<String> timeMaisComum(LocalDate dataInicial, LocalDate dataFinal) {
+
+        List<Time> todosOsTimes = timeRepositorio.findAll();
+
+        return timeMaisComum(dataInicial, dataFinal, todosOsTimes);
+    }
+
+    public String franquiaMaisFamosa(LocalDate dataInicial, LocalDate dataFinal) {
+        
+        List<Time> todosOsTimes = timeRepositorio.findAll();
+
+        return franquiaMaisFamosa(dataInicial, dataFinal, todosOsTimes);
+    }
+
+    public String funcaoMaisComum(LocalDate dataInicial, LocalDate dataFinal){
+
+        List<Time> todosOsTimes = timeRepositorio.findAll();
+
+        return funcaoMaisComum(dataInicial, dataFinal, todosOsTimes);
+    }
+
+    public Integrante integranteMaisUsado (LocalDate dataInicial, LocalDate dataFinal){
+
+        List<Time> todosOsTimes = timeRepositorio.findAll();
+
+        return integranteMaisUsado(dataInicial, dataFinal, todosOsTimes);
+
+    }
+
+    public Time timeDaData2 (LocalDate dataInicial){
+
+        List<Time> todosOsTimes = timeRepositorio.findAll();
+
+        return timeDaData(dataInicial, todosOsTimes);
+
     }
 
 }

@@ -1,0 +1,27 @@
+body{
+
+    background-color: beige;
+}
+
+.box, form{
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+
+}
+
+input{
+    height: 30px;
+    border-radius: 30px;
+    padding: 0 15px 0 15px;
+}
+
+button{
+
+    border-radius: 30px;
+    padding: 0 15px 0 15px
+
+}
