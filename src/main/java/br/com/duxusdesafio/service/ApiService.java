@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -309,14 +310,21 @@ public class ApiService {
         
         List<Time> todosOsTimes = timeRepositorio.findAll();
 
-        return franquiaMaisFamosa(dataInicial, dataFinal, todosOsTimes);
+        String franquia = franquiaMaisFamosa(dataInicial, dataFinal, todosOsTimes);
+
+        String retorno = "Franquia : "+franquia;
+
+        return retorno;
     }
 
     public String funcaoMaisComum(LocalDate dataInicial, LocalDate dataFinal){
 
         List<Time> todosOsTimes = timeRepositorio.findAll();
 
-        return funcaoMaisComum(dataInicial, dataFinal, todosOsTimes);
+        String func = funcaoMaisComum(dataInicial, dataFinal, todosOsTimes);
+
+        String retorno = "função : "+func;
+        return retorno;
     }
 
     public Integrante integranteMaisUsado (LocalDate dataInicial, LocalDate dataFinal){
@@ -327,11 +335,30 @@ public class ApiService {
 
     }
 
-    public Time timeDaData2 (LocalDate dataInicial){
+    public List timeDaData2 (LocalDate dataInicial){
 
         List<Time> todosOsTimes = timeRepositorio.findAll();
 
-        return timeDaData(dataInicial, todosOsTimes);
+        Time time = timeDaData(dataInicial, todosOsTimes);
+
+        // lista para armazenar os nomes dos integrantes do time
+        List<String> nomesIntegrantes = new ArrayList<>();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        
+        // Convertendo LocalDate para String
+        String dataFormatada = time.getData().format(formatter);
+
+        String texto = "data = "+dataFormatada;
+
+        nomesIntegrantes.add(texto);
+
+        // adiciona os nomes dos integrantes do time
+        for (ComposicaoTime composicao : time.getComposicaoTime()) {
+            nomesIntegrantes.add(composicao.getIntegrante().getNome());
+        }
+
+        return nomesIntegrantes;
 
     }
 
