@@ -93,39 +93,62 @@ public class ApiService {
     public List<String> timeMaisComum(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes) {
         // variáveis para armazenar o time mais comum e a maior contagem
         Time timeMaisComum = null;
-        int maxCount = 0;
-
-        // itera sobre os times para contar as ocorrências de cada um dentro do
-        // intervalo
+        int maxcont = 0;
+    
+        // itera todos os times
         for (Time time : todosOsTimes) {
-            // Verifica se o time está dentro do intervalo de datas
-            if (!time.getData().isBefore(dataInicial) && !time.getData().isAfter(dataFinal)) {
-                // Conta quantas vezes esse time aparece dentro do intervalo
-                int count = 0;
-                for (Time t : todosOsTimes) {
-                    if (t.equals(time) && !t.getData().isBefore(dataInicial) && !t.getData().isAfter(dataFinal)) {
-                        count++;
-                    }
-                }
-
-                // Atualiza o time mais comum se a contagem for maior que a anterior
-                if (count > maxCount) {
-                    maxCount = count;
-                    timeMaisComum = time;
+            // conta quantas vezes a mesma composição de time se repete
+            int cont = 0;
+            for (Time t : todosOsTimes) {
+                if (temComposicaoIgual(t, time)) {
+                    cont++;
                 }
             }
+    
+            // se o time tem mais repetições do que o atual, atualiza a variável timeMaisComum
+            if (cont > maxcont) {
+                maxcont = cont;
+                timeMaisComum = time;
+            }
         }
-
+    
         // lista para armazenar os nomes dos integrantes do time mais comum
         List<String> nomesIntegrantes = new ArrayList<>();
-
-        // adiciona os nomes dos integrantes do time mais comum
-        for (ComposicaoTime composicao : timeMaisComum.getComposicaoTime()) {
-            nomesIntegrantes.add(composicao.getIntegrante().getNome());
+    
+        // se encontrou o time mais comum, preenche a lista de integrantes
+        if (timeMaisComum != null) {
+            for (ComposicaoTime composicao : timeMaisComum.getComposicaoTime()) {
+                nomesIntegrantes.add(composicao.getIntegrante().getNome());
+            }
         }
-
+    
         return nomesIntegrantes;
     }
+    
+    // método auxiliar que verifica se dois times têm a mesma composição de integrantes
+    private boolean temComposicaoIgual(Time t1, Time t2) {
+        // verifica se o número de integrantes é o mesmo
+        if (t1.getComposicaoTime().size() != t2.getComposicaoTime().size()) {
+            return false;
+        }
+    
+        // verifica se todos os integrantes são iguais, sem se importar com a ordem
+        for (ComposicaoTime composicao1 : t1.getComposicaoTime()) {
+            boolean encontrado = false;
+            for (ComposicaoTime composicao2 : t2.getComposicaoTime()) {
+                if (composicao1.getIntegrante().equals(composicao2.getIntegrante())) {
+                    encontrado = true;
+                    break;
+                }
+            }
+            if (!encontrado) {
+                return false; // se algum integrante não for encontrado, os times são diferentes
+            }
+        }
+    
+        return true;
+    }
+    
 
     /**
      * Vai retornar a função mais comum nos times dentro do período
